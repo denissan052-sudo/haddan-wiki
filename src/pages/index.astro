@@ -1,0 +1,200 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getArticles } from '../lib/supabase.js';
+
+// Получаем статьи из Supabase
+let articles = [];
+let error = null;
+try {
+  articles = await getArticles();
+} catch (e) {
+  error = e.message;
+}
+
+// Группируем статьи по разделам
+const sections = [
+  { key: 'mechanics', title: 'Механика', description: 'Параметры персонажа, потенциалы вещей, износ экипировки, тотемы, руны и магазин турнирных мастеров.', icon: '⚙️', color: 'gold', tags: ['Параметры', 'Потенциалы', 'Износ', 'Тотемы', 'Руны', 'Магазин МТМ'] },
+  { key: 'magic', title: 'Магия', description: 'Пять школ магии, техномагия и универсальные заклинания. Полный каталог заклинаний и школ.', icon: '🔮', color: 'purple', tags: ['Разрушение', 'Изменение', 'Богов', 'Шаманизм', 'Техномагия', 'Универсальная'] },
+  { key: 'events', title: 'Ивенты', description: 'Календарь текущих и ближайших событий: тыква, буйство стихий, урхатонг, хэллоуин, цеппелины.', icon: '📅', color: 'red', tags: ['Тыква', 'Буйство стихий', 'Урхатонг', 'Halloween', 'Цеппелины'] },
+  { key: 'dungeons', title: 'Подземелья', description: 'Гайды по подземельям и особым локациям: подводное приключение, радиоактивный лес и другие.', icon: '🏰', color: 'blue', tags: ['Подводное', 'Радиоактивный лес'] },
+  { key: 'items', title: 'Предметы', description: 'Каталог рун, тотемов, масок, эликсиров и других предметов игрового мира.', icon: '💎', color: 'cyan', tags: ['Руны', 'Тотемы', 'Маски'] },
+  { key: 'classes', title: 'Классы', description: '11 игровых классов: их особенности, билды, роли в группе и PvP.', icon: '⚔️', color: 'orange', tags: ['В разработке'] },
+];
+
+const colorMap = {
+  gold: { bg: 'bg-haddan-gold/10', text: 'text-haddan-gold', border: 'border-haddan-gold/20', gradient: 'from-haddan-gold-dark to-haddan-gold' },
+  purple: { bg: 'bg-haddan-purple/10', text: 'text-haddan-purple', border: 'border-haddan-purple/20', gradient: 'from-haddan-purple to-haddan-purple' },
+  red: { bg: 'bg-haddan-red/10', text: 'text-haddan-red', border: 'border-haddan-red/20', gradient: 'from-haddan-red to-haddan-red' },
+  blue: { bg: 'bg-haddan-blue/10', text: 'text-haddan-blue', border: 'border-haddan-blue/20', gradient: 'from-haddan-blue to-haddan-blue' },
+  cyan: { bg: 'bg-haddan-cyan/10', text: 'text-haddan-cyan', border: 'border-haddan-cyan/20', gradient: 'from-haddan-cyan to-haddan-cyan' },
+  orange: { bg: 'bg-haddan-orange/10', text: 'text-haddan-orange', border: 'border-haddan-orange/20', gradient: 'from-haddan-orange to-haddan-orange' },
+};
+
+const quickLinks = [
+  { label: '📊 Параметры', href: '/haddan-wiki/mechanics' },
+  { label: '💎 Потенциалы', href: '/haddan-wiki/mechanics' },
+  { label: '🛡️ Износ', href: '/haddan-wiki/mechanics' },
+  { label: '🔮 Руны', href: '/haddan-wiki/items' },
+  { label: '📅 Ивенты', href: '/haddan-wiki/events' },
+  { label: '🏰 Подземелья', href: '/haddan-wiki/dungeons' },
+];
+---
+
+<Layout title="Главная">
+    <Header />
+
+    <!-- Hero -->
+    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+        <div class="absolute inset-0 hero-bg"></div>
+        <div class="absolute inset-0 stars"></div>
+        <div class="relative z-10 max-w-3xl mx-auto px-4 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-haddan-gold/10 border border-haddan-gold/20 rounded-full text-xs font-semibold text-haddan-gold uppercase tracking-widest mb-8">
+                <span class="w-1.5 h-1.5 rounded-full bg-haddan-gold animate-pulse"></span>
+                Браузерная MMORPG с 2004 года
+            </div>
+            <h1 class="font-cinzel text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-6">
+                <span class="bg-gradient-to-br from-haddan-text via-haddan-text to-haddan-gold-light bg-clip-text text-transparent">Энциклопедия</span><br>
+                <span class="bg-gradient-to-br from-haddan-gold-light via-haddan-gold to-haddan-gold-dark bg-clip-text text-transparent">мира Хаддан</span>
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl text-haddan-text-secondary max-w-xl mx-auto mb-10 leading-relaxed">
+                Всё, что нужно знать о мире Хаддан: классы, профессии, руны, подземелья, ивенты, магия и секреты.
+            </p>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-12 mb-10">
+                <div class="text-center"><div class="font-cinzel text-2xl md:text-3xl font-bold text-haddan-gold-light">22+</div><div class="text-xs text-haddan-muted uppercase tracking-wider mt-1">Лет игре</div></div>
+                <div class="text-center"><div class="font-cinzel text-2xl md:text-3xl font-bold text-haddan-gold-light">11</div><div class="text-xs text-haddan-muted uppercase tracking-wider mt-1">Классов</div></div>
+                <div class="text-center"><div class="font-cinzel text-2xl md:text-3xl font-bold text-haddan-gold-light">5</div><div class="text-xs text-haddan-muted uppercase tracking-wider mt-1">Профессий</div></div>
+                <div class="text-center"><div class="font-cinzel text-2xl md:text-3xl font-bold text-haddan-gold-light">5</div><div class="text-xs text-haddan-muted uppercase tracking-wider mt-1">Школ магии</div></div>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#sections" class="btn-primary text-base px-8 py-4">Разделы энциклопедии</a>
+                <a href="https://ru.haddan.ru" target="_blank" class="btn-outline text-base px-8 py-4">Перейти в игру</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Bar -->
+    <div class="bg-haddan-bg-secondary border-y border-haddan-border py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-hide">
+                <span class="text-xs text-haddan-muted uppercase tracking-widest font-semibold shrink-0">Быстрый доступ:</span>
+                {quickLinks.map(link => (
+                    <a href={link.href} class="shrink-0 px-4 py-2 bg-haddan-card border border-haddan-border rounded-full text-sm text-haddan-text-secondary hover:border-haddan-gold hover:text-haddan-gold-light transition-all whitespace-nowrap">{link.label}</a>
+                ))}
+            </div>
+        </div>
+    </div>
+
+    <!-- Sections -->
+    <section id="sections" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="section-tag">Разделы энциклопедии</span>
+            <h2 class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-text mb-4">Всё о мире Хаддан</h2>
+            <p class="text-haddan-text-secondary text-lg max-w-2xl mx-auto">Выберите раздел и погрузитесь в детали игровой механики, магии, ивентов и приключений.</p>
+        </div>
+
+        {error && (
+            <div class="text-center py-8">
+                <p class="text-haddan-red">Ошибка загрузки: {error}</p>
+                <p class="text-haddan-muted text-sm mt-2">Проверьте подключение к Supabase</p>
+            </div>
+        )}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {sections.map(section => {
+                const c = colorMap[section.color];
+                const sectionArticles = articles.filter(a => a.section === section.key);
+                return (
+                    <a href={`/haddan-wiki/${section.key}`} class="card group relative block">
+                        <div class={`absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-gradient-to-r ${c.gradient} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
+                        <div class="flex items-start gap-4">
+                            <div class={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 ${c.bg} ${c.text}`}>{section.icon}</div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-cinzel text-lg font-semibold text-haddan-text group-hover:text-haddan-gold-light transition-colors">{section.title}</h3>
+                                <p class="text-sm text-haddan-text-secondary mt-1 line-clamp-2">{section.description}</p>
+                                {sectionArticles.length > 0 && (
+                                    <p class="text-xs text-haddan-muted mt-2">{sectionArticles.length} статей</p>
+                                )}
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-haddan-bg-secondary border border-haddan-border flex items-center justify-center text-haddan-muted group-hover:bg-haddan-gold group-hover:text-haddan-bg transition-all shrink-0 mt-1">→</div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-haddan-border/50">
+                            <div class="flex flex-wrap gap-2">
+                                {section.tags.map(tag => (
+                                    <span class={`px-3 py-1 rounded-full text-xs font-medium border ${c.bg} ${c.text} ${c.border}`}>{tag}</span>
+                                ))}
+                            </div>
+                        </div>
+                    </a>
+                );
+            })}
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div>
+                <span class="section-tag">О проекте</span>
+                <h2 class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-text mb-4">Создано игроками для игроков</h2>
+                <p class="text-haddan-text-secondary mb-6">Haddan Wiki — неофициальная энциклопедия, собирающая и структурирующая знания о браузерной MMORPG Haddan. Здесь вы найдёте проверенную информацию о механике, магии, ивентах и многом другом.</p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="https://forum.haddan.ru" target="_blank" class="btn-primary text-sm">Форум</a>
+                    <a href="https://vk.com/haddangame" target="_blank" class="btn-outline text-sm">ВКонтакте</a>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card text-center py-8">
+                    <div class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-gold mb-2">{articles.length}</div>
+                    <div class="text-sm text-haddan-text-secondary">Статей</div>
+                </div>
+                <div class="card text-center py-8">
+                    <div class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-blue mb-2">11</div>
+                    <div class="text-sm text-haddan-text-secondary">Классов</div>
+                </div>
+                <div class="card text-center py-8">
+                    <div class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-purple mb-2">5</div>
+                    <div class="text-sm text-haddan-text-secondary">Школ магии</div>
+                </div>
+                <div class="card text-center py-8">
+                    <div class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-green mb-2">22+</div>
+                    <div class="text-sm text-haddan-text-secondary">Лет игре</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mini-Apps Preview -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-haddan-bg-secondary border-y border-haddan-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="section-tag">Инструменты</span>
+                <h2 class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-text mb-4">Мини-приложения</h2>
+                <p class="text-haddan-text-secondary text-lg max-w-2xl mx-auto">Полезные инструменты для игроков. Пока в разработке — скоро будут доступны!</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card text-center py-10 opacity-60">
+                    <div class="w-16 h-16 rounded-xl bg-haddan-gold/10 flex items-center justify-center text-3xl mx-auto mb-4">🔍</div>
+                    <h3 class="font-cinzel text-lg font-semibold text-haddan-text mb-2">Поиск по рынку</h3>
+                    <p class="text-sm text-haddan-muted">Поиск предметов на торговых площадках</p>
+                    <span class="inline-block mt-4 px-3 py-1 rounded-full text-xs font-medium bg-haddan-gold/10 text-haddan-gold border border-haddan-gold/20">Скоро</span>
+                </div>
+                <div class="card text-center py-10 opacity-60">
+                    <div class="w-16 h-16 rounded-xl bg-haddan-blue/10 flex items-center justify-center text-3xl mx-auto mb-4">📍</div>
+                    <h3 class="font-cinzel text-lg font-semibold text-haddan-text mb-2">Локатор персонажей</h3>
+                    <p class="text-sm text-haddan-muted">Поиск персонажей по нику или ID</p>
+                    <span class="inline-block mt-4 px-3 py-1 rounded-full text-xs font-medium bg-haddan-blue/10 text-haddan-blue border border-haddan-blue/20">Скоро</span>
+                </div>
+                <div class="card text-center py-10 opacity-60">
+                    <div class="w-16 h-16 rounded-xl bg-haddan-purple/10 flex items-center justify-center text-3xl mx-auto mb-4">🧮</div>
+                    <h3 class="font-cinzel text-lg font-semibold text-haddan-text mb-2">Калькулятор ресурсов</h3>
+                    <p class="text-sm text-haddan-muted">Расчёт необходимых материалов</p>
+                    <span class="inline-block mt-4 px-3 py-1 rounded-full text-xs font-medium bg-haddan-purple/10 text-haddan-purple border border-haddan-purple/20">Скоро</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <Footer />
+</Layout>
