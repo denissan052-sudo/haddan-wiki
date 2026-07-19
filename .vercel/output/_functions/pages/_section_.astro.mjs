@@ -1,0 +1,63 @@
+/* empty css                                     */
+import { e as createComponent, k as renderComponent, l as renderScript, r as renderTemplate, h as createAstro, m as maybeRenderHead, g as addAttribute } from '../chunks/astro/server_CzcP1_xN.mjs';
+import 'piccolore';
+import { g as getArticles, i as isEditor, $ as $$Layout, a as $$Header, b as $$Footer } from '../chunks/supabase_BDe7DXET.mjs';
+export { renderers } from '../renderers.mjs';
+
+const $$Astro = createAstro();
+const $$section = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$section;
+  const { section } = Astro2.params;
+  const sectionConfig = {
+    mechanics: { title: "\u041C\u0435\u0445\u0430\u043D\u0438\u043A\u0430", description: "\u0412\u0441\u0451 \u043E \u0438\u0433\u0440\u043E\u0432\u044B\u0445 \u043C\u0435\u0445\u0430\u043D\u0438\u043A\u0430\u0445", icon: "\u2699\uFE0F", color: "gold" },
+    magic: { title: "\u041C\u0430\u0433\u0438\u044F", description: "\u0428\u043A\u043E\u043B\u044B \u043C\u0430\u0433\u0438\u0438 \u0438 \u0437\u0430\u043A\u043B\u0438\u043D\u0430\u043D\u0438\u044F", icon: "\u{1F52E}", color: "purple" },
+    events: { title: "\u0418\u0432\u0435\u043D\u0442\u044B", description: "\u0421\u043E\u0431\u044B\u0442\u0438\u044F \u0438 \u0442\u0443\u0440\u043D\u0438\u0440\u044B", icon: "\u{1F4C5}", color: "red" },
+    dungeons: { title: "\u041F\u043E\u0434\u0437\u0435\u043C\u0435\u043B\u044C\u044F", description: "\u0413\u0430\u0439\u0434\u044B \u043F\u043E \u043F\u043E\u0434\u0437\u0435\u043C\u0435\u043B\u044C\u044F\u043C", icon: "\u{1F3F0}", color: "blue" },
+    items: { title: "\u041F\u0440\u0435\u0434\u043C\u0435\u0442\u044B", description: "\u041A\u0430\u0442\u0430\u043B\u043E\u0433 \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u043E\u0432", icon: "\u{1F48E}", color: "cyan" },
+    classes: { title: "\u041A\u043B\u0430\u0441\u0441\u044B", description: "\u0418\u0433\u0440\u043E\u0432\u044B\u0435 \u043A\u043B\u0430\u0441\u0441\u044B", icon: "\u2694\uFE0F", color: "orange" }
+  };
+  const config = sectionConfig[section] || sectionConfig.mechanics;
+  let articles = [];
+  let error = null;
+  let editor = false;
+  try {
+    articles = await getArticles(section);
+    try {
+      editor = await isEditor();
+    } catch (e) {
+      editor = false;
+    }
+  } catch (e) {
+    error = e.message;
+  }
+  const c = {
+    gold: { bg: "bg-haddan-gold/10", text: "text-haddan-gold", border: "border-haddan-gold/20", gradient: "from-haddan-gold-dark to-haddan-gold" },
+    purple: { bg: "bg-haddan-purple/10", text: "text-haddan-purple", border: "border-haddan-purple/20", gradient: "from-haddan-purple to-haddan-purple" },
+    red: { bg: "bg-haddan-red/10", text: "text-haddan-red", border: "border-haddan-red/20", gradient: "from-haddan-red to-haddan-red" },
+    blue: { bg: "bg-haddan-blue/10", text: "text-haddan-blue", border: "border-haddan-blue/20", gradient: "from-haddan-blue to-haddan-blue" },
+    cyan: { bg: "bg-haddan-cyan/10", text: "text-haddan-cyan", border: "border-haddan-cyan/20", gradient: "from-haddan-cyan to-haddan-cyan" },
+    orange: { bg: "bg-haddan-orange/10", text: "text-haddan-orange", border: "border-haddan-orange/20", gradient: "from-haddan-orange to-haddan-orange" }
+  }[config.color];
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": config.title }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "Header", $$Header, {})} ${maybeRenderHead()}<section class="relative pt-28 pb-16 overflow-hidden"> <div class="absolute inset-0 hero-bg"></div> <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <div class="flex items-center gap-3 mb-4"> <a href="/haddan-wiki/" class="text-sm text-haddan-muted hover:text-haddan-gold-light transition-colors">← Главная</a> <span class="text-haddan-muted">/</span> <span class="text-sm text-haddan-gold">${config.title}</span> </div> <div class="flex items-center gap-4 mb-6"> <div${addAttribute(`w-14 h-14 rounded-xl flex items-center justify-center text-3xl shrink-0 ${c.bg} ${c.text}`, "class")}>${config.icon}</div> <div> <h1 class="font-cinzel text-3xl md:text-4xl font-bold text-haddan-text">${config.title}</h1> <p class="text-haddan-text-secondary mt-1">${config.description}</p> </div> </div> </div> </section>  ${editor && renderTemplate`<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8"> <div class="admin-bar"> <span class="admin-bar-text">👑 Режим редактора</span> <button id="add-article-btn" class="btn-success text-sm py-2 px-4">+ Добавить статью</button> </div> </div>`} <section class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-24"> ${error && renderTemplate`<div class="text-center py-8"> <p class="text-haddan-red">Ошибка загрузки: ${error}</p> </div>`} ${articles.length === 0 && !error ? renderTemplate`<div class="text-center py-20"> <div class="w-20 h-20 rounded-full bg-haddan-card border border-haddan-border flex items-center justify-center text-4xl mx-auto mb-4">📝</div> <h2 class="font-cinzel text-xl font-semibold text-haddan-text mb-2">Раздел в разработке</h2> <p class="text-haddan-text-secondary">Статьи скоро появятся. Следите за обновлениями!</p> </div>` : renderTemplate`<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"> ${articles.map((article) => renderTemplate`<div class="card group relative"${addAttribute(article.id, "data-article-id")}> ${editor && renderTemplate`<div class="absolute top-2 right-2 flex gap-2 z-10"> <button class="edit-article-btn w-8 h-8 rounded-lg bg-haddan-bg-secondary border border-haddan-border flex items-center justify-center text-haddan-muted hover:text-haddan-gold hover:border-haddan-gold transition-all"${addAttribute(article.id, "data-id")} title="Редактировать">
+✏️
+</button> <button class="delete-article-btn w-8 h-8 rounded-lg bg-haddan-bg-secondary border border-haddan-border flex items-center justify-center text-haddan-muted hover:text-haddan-red hover:border-haddan-red transition-all"${addAttribute(article.id, "data-id")} title="Удалить">
+🗑️
+</button> </div>`} <div${addAttribute(`absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-gradient-to-r ${c.gradient} opacity-0 group-hover:opacity-100 transition-opacity`, "class")}></div> <a${addAttribute(`/haddan-wiki/article/${article.slug}`, "href")} class="block"> <h3 class="font-cinzel text-lg font-semibold text-haddan-text group-hover:text-haddan-gold-light transition-colors mb-2">${article.title}</h3> <p class="text-sm text-haddan-text-secondary mb-4">${article.description}</p> ${article.tags && article.tags.length > 0 && renderTemplate`<div class="flex flex-wrap gap-2"> ${article.tags.map((tag) => renderTemplate`<span${addAttribute(`px-3 py-1 rounded-full text-xs font-medium border ${c.bg} ${c.text} ${c.border}`, "class")}>${tag}</span>`)} </div>`} </a> </div>`)} </div>`} </section>  ${editor && renderTemplate`<div id="article-modal" class="modal-overlay hidden"> <div class="modal-content"> <div class="modal-header"> <h2 class="modal-title" id="modal-title">Добавить статью</h2> <button id="close-article-modal" class="modal-close">×</button> </div> <form id="article-form" class="space-y-4"> <input type="hidden" id="article-id"> <div class="form-group"> <label class="form-label">Название</label> <input type="text" id="article-title" class="form-input" required> </div> <div class="form-group"> <label class="form-label">URL (slug)</label> <input type="text" id="article-slug" class="form-input" placeholder="nazvanie-stati" required> </div> <div class="form-group"> <label class="form-label">Описание</label> <input type="text" id="article-description" class="form-input"> </div> <div class="form-group"> <label class="form-label">Раздел</label> <select id="article-section" class="form-select"> <option value="mechanics">Механика</option> <option value="magic">Магия</option> <option value="events">Ивенты</option> <option value="dungeons">Подземелья</option> <option value="items">Предметы</option> <option value="classes">Классы</option> </select> </div> <div class="form-group"> <label class="form-label">Теги (через запятую)</label> <input type="text" id="article-tags" class="form-input" placeholder="тег1, тег2, тег3"> </div> <div class="form-group"> <label class="form-label">Статус</label> <select id="article-status" class="form-select"> <option value="draft">Черновик</option> <option value="published">Опубликовано</option> </select> </div> <div class="form-group"> <label class="form-label">Контент (Markdown)</label> <textarea id="article-content" class="form-textarea" placeholder="# Заголовок
+
+Текст статьи..." required></textarea> </div> <div class="flex gap-3"> <button type="submit" class="btn-primary">Сохранить</button> <button type="button" id="cancel-article" class="btn-outline">Отмена</button> </div> </form> <div id="article-error" class="mt-4 p-3 bg-haddan-red/10 border border-haddan-red/30 rounded-lg text-haddan-red text-sm hidden"></div> </div> </div>`}${renderComponent($$result2, "Footer", $$Footer, {})} ` })} ${editor && renderTemplate`${renderScript($$result, "C:/Users/Admin/Downloads/haddan-wiki-supabase/src/pages/[section].astro?astro&type=script&index=0&lang.ts")}`}`;
+}, "C:/Users/Admin/Downloads/haddan-wiki-supabase/src/pages/[section].astro", void 0);
+
+const $$file = "C:/Users/Admin/Downloads/haddan-wiki-supabase/src/pages/[section].astro";
+const $$url = "/[section]";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$section,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
