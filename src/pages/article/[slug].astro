@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { getArticleBySlug, isEditor } from '../../lib/supabase.js';
+import { getArticleBySlug } from '../../lib/supabase-server.js';
 
 const { slug } = Astro.params;
 
