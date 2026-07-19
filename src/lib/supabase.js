@@ -3,7 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = 'https://hnxqzwngtvjdeiuinxnv.supabase.co';
 const supabaseKey = 'sb_publishable_lWrCmmU8HO9u0KqoLCf0MA_bPuv-lEP';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  realtime: {
+    transport: null
+  }
+});
 
 // Функции для работы со статьями
 export async function getArticles(section = null) {
