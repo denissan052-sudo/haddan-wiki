@@ -1,12 +1,12 @@
 ---
 const navItems = [
-  { label: 'Главная', href: '/haddan-wiki/' },
-  { label: 'Механика', href: '/haddan-wiki/mechanics' },
-  { label: 'Магия', href: '/haddan-wiki/magic' },
-  { label: 'Ивенты', href: '/haddan-wiki/events' },
-  { label: 'Подземелья', href: '/haddan-wiki/dungeons' },
-  { label: 'Предметы', href: '/haddan-wiki/items' },
-  { label: 'Классы', href: '/haddan-wiki/classes' },
+  { label: 'Главная', href: '/' },
+{ label: 'Механика', href: '/mechanics' },
+{ label: 'Магия', href: '/magic' },
+{ label: 'Ивенты', href: '/events' },
+{ label: 'Подземелья', href: '/dungeons' },
+{ label: 'Предметы', href: '/items' },
+{ label: 'Классы', href: '/classes' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -15,7 +15,7 @@ const currentPath = Astro.url.pathname;
 <header class="fixed top-0 left-0 right-0 z-50 bg-haddan-bg/95 backdrop-blur-xl border-b border-haddan-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 md:h-[72px]">
-            <a href="/haddan-wiki/" class="flex items-center gap-3">
+            <a href="/" class="flex items-center gap-3">
                 <div class="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-br from-haddan-gold-dark to-haddan-gold rounded-lg flex items-center justify-center font-cinzel font-black text-lg text-haddan-bg">H</div>
                 <div class="hidden sm:block">
                     <div class="font-cinzel font-bold text-lg text-haddan-gold-light tracking-wide">Haddan</div>
