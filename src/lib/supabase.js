@@ -7,7 +7,14 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
     persistSession: false
   },
-  realtime: false
+  realtime: {
+    params: {
+      eventsPerSecond: 0
+    }
+  },
+  db: {
+    schema: 'public'
+  }
 });
 
 // Функции для работы со статьями
@@ -79,7 +86,6 @@ export async function signUp(email, password, username) {
   });
   if (authError) throw authError;
 
-  // Создаём профиль
   if (authData.user) {
     const { error: profileError } = await supabase
       .from('profiles')
