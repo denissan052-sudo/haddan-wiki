@@ -1,7 +1,7 @@
 /* empty css                                     */
-import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, g as addAttribute } from '../chunks/astro/server_CzcP1_xN.mjs';
-import 'piccolore';
-import { g as getArticles, $ as $$Layout, a as $$Header, b as $$Footer } from '../chunks/supabase_BDe7DXET.mjs';
+import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, d as addAttribute } from '../chunks/astro/server_Dbmzirj3.mjs';
+import 'kleur/colors';
+import { g as getArticles, $ as $$Layout, a as $$Header, b as $$Footer } from '../chunks/supabase_BXcD18E9.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {
