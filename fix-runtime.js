@@ -1,0 +1,1 @@
+const fs = require('fs'); const file = '.vercel/output/functions/_render.func/.vc-config.json'; const config = JSON.parse(fs.readFileSync(file, 'utf8')); config.runtime = 'nodejs20.x'; fs.writeFileSync(file, JSON.stringify(config, null, '\t')); console.log('Runtime changed to:', config.runtime); 
