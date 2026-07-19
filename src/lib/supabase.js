@@ -4,9 +4,10 @@ const supabaseUrl = 'https://hnxqzwngtvjdeiuinxnv.supabase.co';
 const supabaseKey = 'sb_publishable_lWrCmmU8HO9u0KqoLCf0MA_bPuv-lEP';
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
-  realtime: {
-    transport: null
-  }
+  auth: {
+    persistSession: false
+  },
+  realtime: false
 });
 
 // Функции для работы со статьями
