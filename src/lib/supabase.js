@@ -1,124 +1,128 @@
+import { createClient } from '@supabase/supabase-js';
+
 const supabaseUrl = 'https://hnxqzwngtvjdeiuinxnv.supabase.co';
 const supabaseKey = 'sb_publishable_lWrCmmU8HO9u0KqoLCf0MA_bPuv-lEP';
 
-async function supabaseRequest(table, method = 'GET', body = null, query = null) {
-  let url = `${supabaseUrl}/rest/v1/${table}`;
-  if (query) {
-    url += '?' + new URLSearchParams(query).toString();
+// Отключаем realtime полностью
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  },
+  realtime: false,
+  global: {
+    fetch: fetch.bind(globalThis)
   }
-  
-  const headers = {
-    'apikey': supabaseKey,
-    'Authorization': `Bearer ${supabaseKey}`,
-    'Content-Type': 'application/json',
-    'Prefer': method === 'POST' ? 'return=representation' : method === 'PATCH' ? 'return=representation' : ''
-  };
-
-  const options = {
-    method,
-    headers
-  };
-
-  if (body) {
-    options.body = JSON.stringify(body);
-  }
-
-  const response = await fetch(url, options);
-  const data = await response.json();
-  
-  if (!response.ok) {
-    throw new Error(data.message || 'Supabase error');
-  }
-  
-  return data;
-}
+});
 
 // Функции для работы со статьями
 export async function getArticles(section = null) {
-  let query = { select: '*', status: 'eq.published', order: 'created_at.desc' };
+  let query = supabase.from('articles').select('*').eq('status', 'published').order('created_at', { ascending: false });
   if (section) {
-    query.section = `eq.${section}`;
+    query = query.eq('section', section);
   }
-  return await supabaseRequest('articles', 'GET', null, query);
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
 }
 
 export async function getArticleBySlug(slug) {
-  const data = await supabaseRequest('articles', 'GET', null, {
-    select: '*',
-    slug: `eq.${slug}`,
-    status: 'eq.published',
-    limit: 1
-  });
-  return data[0] || null;
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .single();
+  if (error) throw error;
+  return data;
 }
 
 export async function getAllArticlesAdmin() {
-  return await supabaseRequest('articles', 'GET', null, {
-    select: '*',
-    order: 'created_at.desc'
-  });
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
 }
 
 export async function createArticle(article) {
-  return await supabaseRequest('articles', 'POST', article);
+  const { data, error } = await supabase
+    .from('articles')
+    .insert(article)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
 }
 
 export async function updateArticle(id, article) {
-  return await supabaseRequest('articles', 'PATCH', article, { id: `eq.${id}` });
+  const { data, error } = await supabase
+    .from('articles')
+    .update(article)
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
 }
 
 export async function deleteArticle(id) {
-  await supabaseRequest('articles', 'DELETE', null, { id: `eq.${id}` });
-  return true;
+  const { error } = await supabase
+    .from('articles')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
 }
 
 // Функции для авторизации
 export async function signUp(email, password, username) {
-  const response = await fetch(`${supabaseUrl}/auth/v1/signup`, {
-    method: 'POST',
-    headers: {
-      'apikey': supabaseKey,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
+  const { data: authData, error: authError } = await supabase.auth.signUp({
+    email,
+    password,
   });
-  const authData = await response.json();
-  if (!response.ok) throw new Error(authData.message || 'Auth error');
+  if (authError) throw authError;
 
   if (authData.user) {
-    await supabaseRequest('profiles', 'POST', {
-      id: authData.user.id,
-      username,
-      role: 'user'
-    });
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert({
+        id: authData.user.id,
+        username,
+        role: 'user'
+      });
+    if (profileError) throw profileError;
   }
 
   return authData;
 }
 
 export async function signIn(email, password) {
-  const response = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
-    method: 'POST',
-    headers: {
-      'apikey': supabaseKey,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || 'Auth error');
+  if (error) throw error;
   return data;
 }
 
 export async function signOut() {
-  // Просто очищаем локальное состояние
-  return true;
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
 }
 
 export async function getCurrentUser() {
-  // Для SSR сложно получить текущего пользователя без cookies
-  // Возвращаем null, пользователь будет проверяться на клиенте
-  return null;
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  return { ...user, profile };
 }
 
 export async function isEditor() {
