@@ -60,3 +60,44 @@ export async function isEditor() {
   const user = await getCurrentUser();
   return user?.profile?.role === 'editor' || user?.profile?.role === 'admin';
 }
+
+// Функции для работы со статьями (клиент)
+export async function getArticleBySlug(slug) {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function createArticle(article) {
+  const { data, error } = await supabase
+    .from('articles')
+    .insert(article)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateArticle(id, article) {
+  const { data, error } = await supabase
+    .from('articles')
+    .update(article)
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteArticle(id) {
+  const { error } = await supabase
+    .from('articles')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
+}
