@@ -60,8 +60,3 @@ export async function isEditor() {
   const user = await getCurrentUser();
   return user?.profile?.role === 'editor' || user?.profile?.role === 'admin';
 }
-export async function isEditor() {
-  // На сервере без сессии не проверить роль
-  // Возвращаем false, проверка будет на клиенте
-  return false;
-}
