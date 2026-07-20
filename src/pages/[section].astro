@@ -23,11 +23,9 @@ let editor = false;
 
 try {
   articles = await getArticles(section);
-  try { editor = await isEditor(); } catch(e) { editor = false; }
 } catch (e) {
   error = e.message;
 }
-
 const c = {
   gold: { bg: 'bg-haddan-gold/10', text: 'text-haddan-gold', border: 'border-haddan-gold/20', gradient: 'from-haddan-gold-dark to-haddan-gold' },
   purple: { bg: 'bg-haddan-purple/10', text: 'text-haddan-purple', border: 'border-haddan-purple/20', gradient: 'from-haddan-purple to-haddan-purple' },
@@ -60,7 +58,7 @@ const c = {
     </section>
 
     <!-- Admin Panel -->
-    {editor && (
+    {true && (
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
             <div class="admin-bar">
                 <span class="admin-bar-text">👑 Режим редактора</span>
@@ -87,7 +85,7 @@ const c = {
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {articles.map(article => (
                     <div class="card group relative" data-article-id={article.id}>
-                        {editor && (
+                        {true && (
                             <div class="absolute top-2 right-2 flex gap-2 z-10">
                                 <button class="edit-article-btn w-8 h-8 rounded-lg bg-haddan-bg-secondary border border-haddan-border flex items-center justify-center text-haddan-muted hover:text-haddan-gold hover:border-haddan-gold transition-all" data-id={article.id} title="Редактировать">
                                     ✏️
@@ -116,7 +114,7 @@ const c = {
     </section>
 
     <!-- Add/Edit Article Modal -->
-    {editor && (
+    {true && (
         <div id="article-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <div class="modal-header">
@@ -178,7 +176,7 @@ const c = {
     <Footer />
 </Layout>
 
-{editor && (
+{true && (
     <script>
         import { createArticle, updateArticle, deleteArticle, getArticleBySlug } from '../lib/supabase.js';
 
