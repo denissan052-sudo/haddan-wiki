@@ -36,15 +36,15 @@ const sectionNames = {
                 <div class="w-20 h-20 rounded-full bg-haddan-card border border-haddan-border flex items-center justify-center text-4xl mx-auto mb-4">😕</div>
                 <h2 class="font-cinzel text-xl font-semibold text-haddan-text mb-2">Статья не найдена</h2>
                 <p class="text-haddan-text-secondary">{error || 'Статья была удалена или ещё не создана.'}</p>
-                <a href="/haddan-wiki/" class="btn-primary mt-6">На главную</a>
+                <a href="/" class="btn-primary mt-6">На главную</a>
             </div>
         ) : (
             <div>
                 <!-- Breadcrumbs -->
                 <div class="flex items-center gap-3 mb-8 text-sm">
-                    <a href="/haddan-wiki/" class="text-haddan-muted hover:text-haddan-gold-light transition-colors">Главная</a>
+                    <a href="/" class="text-haddan-muted hover:text-haddan-gold-light transition-colors">Главная</a>
                     <span class="text-haddan-muted">/</span>
-                    <a href={`/haddan-wiki/${article.section}`} class="text-haddan-muted hover:text-haddan-gold-light transition-colors">{sectionNames[article.section] || article.section}</a>
+                    <a href={`/${article.section}`} class="text-haddan-muted hover:text-haddan-gold-light transition-colors">{sectionNames[article.section] || article.section}</a>
                     <span class="text-haddan-muted">/</span>
                     <span class="text-haddan-gold">{article.title}</span>
                 </div>
@@ -81,7 +81,7 @@ const sectionNames = {
                 <!-- Article Footer -->
                 <div class="mt-16 pt-8 border-t border-haddan-border">
                     <div class="flex items-center justify-between">
-                        <a href={`/haddan-wiki/${article.section}`} class="btn-outline text-sm py-2 px-4">← Назад в раздел</a>
+                        <a href={`/${article.section}`} class="btn-outline text-sm py-2 px-4">← Назад в раздел</a>
                         <a href="https://forum.haddan.ru" target="_blank" class="text-sm text-haddan-muted hover:text-haddan-gold-light transition-colors">Обсудить на форуме →</a>
                     </div>
                 </div>
@@ -170,7 +170,7 @@ const sectionNames = {
             if (!confirm('Удалить статью? Это действие нельзя отменить.')) return;
             try {
                 await deleteArticle(document.getElementById('edit-id').value);
-                window.location.href = '/haddan-wiki/';
+                window.location.href = '/';
             } catch (err) {
                 alert('Ошибка: ' + err.message);
             }

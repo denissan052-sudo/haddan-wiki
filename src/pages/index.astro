@@ -33,12 +33,12 @@ const colorMap = {
 };
 
 const quickLinks = [
-  { label: '📊 Параметры', href: '/haddan-wiki/mechanics' },
-  { label: '💎 Потенциалы', href: '/haddan-wiki/mechanics' },
-  { label: '🛡️ Износ', href: '/haddan-wiki/mechanics' },
-  { label: '🔮 Руны', href: '/haddan-wiki/items' },
-  { label: '📅 Ивенты', href: '/haddan-wiki/events' },
-  { label: '🏰 Подземелья', href: '/haddan-wiki/dungeons' },
+ { label: '📊 Параметры', href: '/mechanics' },
+{ label: '💎 Потенциалы', href: '/mechanics' },
+{ label: '🛡️ Износ', href: '/mechanics' },
+{ label: '🔮 Руны', href: '/items' },
+{ label: '📅 Ивенты', href: '/events' },
+{ label: '🏰 Подземелья', href: '/dungeons' },
 ];
 ---
 
@@ -106,7 +106,7 @@ const quickLinks = [
                 const c = colorMap[section.color];
                 const sectionArticles = articles.filter(a => a.section === section.key);
                 return (
-                    <a href={`/haddan-wiki/${section.key}`} class="card group relative block">
+                    <a href={`/${section.key}`} class="card group relative block">
                         <div class={`absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-gradient-to-r ${c.gradient} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
                         <div class="flex items-start gap-4">
                             <div class={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 ${c.bg} ${c.text}`}>{section.icon}</div>

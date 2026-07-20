@@ -45,7 +45,7 @@ const c = {
         <div class="absolute inset-0 hero-bg"></div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center gap-3 mb-4">
-                <a href="/haddan-wiki/" class="text-sm text-haddan-muted hover:text-haddan-gold-light transition-colors">← Главная</a>
+                <a href="/" class="text-sm text-haddan-muted hover:text-haddan-gold-light transition-colors">← Главная</a>
                 <span class="text-haddan-muted">/</span>
                 <span class="text-sm text-haddan-gold">{config.title}</span>
             </div>
@@ -98,7 +98,7 @@ const c = {
                             </div>
                         )}
                         <div class={`absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-gradient-to-r ${c.gradient} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
-                        <a href={`/haddan-wiki/article/${article.slug}`} class="block">
+                        <a href={`/article/${article.slug}`} class="block">
                             <h3 class="font-cinzel text-lg font-semibold text-haddan-text group-hover:text-haddan-gold-light transition-colors mb-2">{article.title}</h3>
                             <p class="text-sm text-haddan-text-secondary mb-4">{article.description}</p>
                             {article.tags && article.tags.length > 0 && (
