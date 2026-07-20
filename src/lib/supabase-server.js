@@ -64,3 +64,8 @@ export async function deleteArticle(id) {
   await supabaseRequest('articles', 'DELETE', null, { id: `eq.${id}` });
   return true;
 }
+export async function isEditor() {
+  // На сервере без сессии не проверить роль
+  // Возвращаем false, проверка будет на клиенте
+  return false;
+}
